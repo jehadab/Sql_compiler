@@ -758,7 +758,7 @@ any_name
 
  ;
 
-// start section instraction and functions defination
+// start section instraction and functions defination --------------------------------------------------------------
     callback_func:
      function_header
      '{'
@@ -894,7 +894,7 @@ any_name
     //todo add statment rule ....
     '}'
     ;
- //end section
+ //end section instraction and functions defination --------------------------------------------------------------
 
 
  // statmint start section--------------------------------------------------------------
