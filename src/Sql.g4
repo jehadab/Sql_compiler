@@ -899,62 +899,59 @@ any_name
 
  // statmint start section--------------------------------------------------------------
  arithmetic_infunction_statment
-     : use_random_name (any_oprator)? ASSIGN
-                                     ((use_random_name
-                                     | NUMERIC_LITERAL
-                                     | use_random_name any_oprator NUMERIC_LITERAL
-                                     | NUMERIC_LITERAL any_oprator use_random_name
-                                     | use_random_name any_oprator use_random_name
-                                     | NUMERIC_LITERAL any_oprator NUMERIC_LITERAL)
-                                     ( any_oprator use_random_name
-                                     | any_oprator NUMERIC_LITERAL)*
-                                     )
-     | use_random_name MINUS MINUS
-     | '-' '-' use_random_name
-     | use_random_name PLUS PLUS
-     | PLUS PLUS use_random_name
-
+     : full_arthmatic_statmint
+     | shortcut_statments
   ;
-  boolean_infunction_statment
-     : boolean_expr
-     | boolean_expr ((PIPE2 | AMP2 ) boolean_expr)*
-
-
-     //| use_random_name any_boolean_oprator NUMERIC_LITERAL ((PIPE2 | AMP2 )(boolean_infunction_statment))*
-     //| NUMERIC_LITERAL any_boolean_oprator (use_random_name
-     //                                      | NUMERIC_LITERAL
-     //                                      | OPEN_PAR boolean_infunction_statment CLOSE_PAR)
-     //                                      ((PIPE2 | AMP2 )(boolean_infunction_statment))*
-     //| NUMERIC_LITERAL any_boolean_oprator NUMERIC_LITERAL ((PIPE2 | AMP2 )(boolean_infunction_statment))*
-    // | '('boolean_infunction_statment')' (use_random_name | boolean_infunction_statment )
-    // | (use_random_name | boolean_infunction_statment ) '('boolean_infunction_statment')'
+ full_arthmatic_statmint
+     : (use_random_name (any_arithmetic_oprator)? ASSIGN )+ arithmetic_expr
   ;
- boolean_expr
-     : K_TRUE
-     | K_FALSE
-     | (use_random_name | NUMERIC_LITERAL ) any_boolean_oprator ( use_random_name | NUMERIC_LITERAL )
-     | OPEN_PAR (boolean_expr | arithmetic_infunction_statment) CLOSE_PAR any_boolean_oprator (use_random_name | NUMERIC_LITERAL  )
-     | (use_random_name | NUMERIC_LITERAL ) any_boolean_oprator OPEN_PAR (boolean_expr | arithmetic_infunction_statment) CLOSE_PAR
-     | (OPEN_PAR (boolean_expr | arithmetic_infunction_statment) CLOSE_PAR ) any_boolean_oprator OPEN_PAR (boolean_expr | arithmetic_infunction_statment) CLOSE_PAR
-     ;
- any_boolean_oprator
-     : EQ
-     | GT
-     | GT_EQ
-     | LT
-     | LT_EQ
-     | NOT_EQ1
 
+ arithmetic_expr
+    : OPEN_PAR arithmetic_expr CLOSE_PAR
+    | (PLUS_PLUS | MINUS_MINUS) use_random_name
+    | arithmetic_expr (STAR | DIV) arithmetic_expr
+    | arithmetic_expr POWER arithmetic_expr
+    | arithmetic_expr MOD arithmetic_expr
+    | arithmetic_expr ( PLUS | MINUS) arithmetic_expr
+    | use_random_name (MINUS_MINUS | PLUS_PLUS)
+    | use_random_name
+    | NUMERIC_LITERAL
  ;
 
-  any_oprator
+  any_arithmetic_oprator
      : STAR
      | DIV
      | POWER
      | MOD
      | PLUS
      | MINUS
-     ;
+   ;
+
+
+  boolean_infunction_statment
+     : boolean_expr
+     | boolean_expr ((PIPE2 | AMP2 ) boolean_expr)*
+   ;
+ boolean_expr
+     : OPEN_PAR (boolean_expr) CLOSE_PAR
+     | OPEN_PAR full_arthmatic_statmint CLOSE_PAR
+     | boolean_expr (GT | GT_EQ | LT | LT_EQ )  boolean_expr
+     | boolean_expr (EQ | NOT_EQ1) boolean_expr
+     | arithmetic_expr
+     | K_TRUE
+     | K_FALSE
+     | NUMERIC_LITERAL
+     | use_random_name
+     | IDENTIFIER
+     | ONE_CHAR_LETTER
+  ;
+ shortcut_statments
+      : MINUS_MINUS use_random_name
+      | PLUS_PLUS use_random_name
+      | use_random_name MINUS_MINUS
+      | use_random_name PLUS_PLUS
+ ;
+
 
      //statmint end section----------------------------------------------------------------------
 
@@ -990,6 +987,8 @@ GT_EQ : '>=';
 EQ : '==';
 NOT_EQ1 : '!=';
 NOT_EQ2 : '<>';
+PLUS_PLUS: '++' ;
+MINUS_MINUS:'--' ;
 
 // http://www.sqlite.org/lang_keywords.html
 K_ABORT : A B O R T;
@@ -1029,6 +1028,7 @@ K_DEFERRABLE : D E F E R R A B L E;
 K_DEFERRED : D E F E R R E D;
 K_DELETE : D E L E T E;
 K_DESC : D E S C;
+K_DO : D O ;
 K_DETACH : D E T A C H;
 K_DISTINCT : D I S T I N C T;
 K_DROP : D R O P;
@@ -1044,6 +1044,7 @@ K_EXPLAIN : E X P L A I N;
 K_FAIL : F A I L;
 K_FALSE : F A L S E ;
 K_FOR : F O R;
+K_FOREACH : F O R E A C H ;
 K_FOREIGN : F O R E I G N;
 K_FROM : F R O M;
 K_FULL : F U L L;
@@ -1094,6 +1095,7 @@ K_REFERENCES : R E F E R E N C E S;
 K_REGEXP : R E G E X P;
 K_REINDEX : R E I N D E X;
 K_RELEASE : R E L E A S E;
+K_RETURN : R E T U R N  ;
 K_RENAME : R E N A M E;
 K_REPLACE : R E P L A C E;
 K_RESTRICT : R E S T R I C T;
@@ -1118,6 +1120,7 @@ K_UPDATE : U P D A T E;
 K_USING : U S I N G;
 K_VACUUM : V A C U U M;
 K_VALUES : V A L U E S;
+K_VAR : V A R ;
 K_VIEW : V I E W;
 K_VIRTUAL : V I R T U A L;
 K_WHEN : W H E N;
@@ -1135,8 +1138,8 @@ K_WHILE :  W H I L E ;
 
 IDENTIFIER
  : '"' (~'"' | '""')* '"'
- | '`' (~'`' | '``')* '`'
- | '[' ~']'* ']'
+ //| '`' (~'`' | '``')* '`'
+ //| '[' ~']'* ']'
  //| RANDOM_NAME // TODO check: needs more chars in set
  ;
 RANDOM_NAME :
