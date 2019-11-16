@@ -674,7 +674,7 @@ keyword
 
 //[a-zA-Z_0-9\t \-\[\]\=]+
 unknown
- : .+
+ : .*
  ;
 
 name
@@ -776,9 +776,35 @@ any_name
      ;
 
     create_Array:
-    K_VAR use_random_name ('[]')+ // todo replace by general one
+    K_VAR array_base_form left_side_array
+
+      // todo replace by general one
     ;
 
+    array_base_form: use_random_name ('[]')+  ;
+
+    array_identifier_form:
+          IDENTIFIER (','IDENTIFIER)*
+    ;
+    array_integer_form:
+         NUMERIC_LITERAL (',' NUMERIC_LITERAL)*
+    ;
+    array_charecter_form:
+          ONE_CHAR_LETTER (',' ONE_CHAR_LETTER)*
+    ;
+    array_objects_form:
+           json_statment(','json_statment)*
+    ;
+     left_side_array:
+     '='
+      '{'
+       (array_identifier_form
+       |array_integer_form
+       |array_charecter_form
+       |array_objects_form
+       )?
+      '}'
+     ;
      prameters :
      NUMERIC_LITERAL
      | ONE_CHAR_LETTER
@@ -893,6 +919,23 @@ any_name
     )*
     //todo add statment rule ....
     '}'
+    ;
+
+
+    createring_json_object:
+    K_VAR K_JOSN RANDOM_NAME '='  json_statment
+    ;
+    json_statment:
+    '{' ((use_random_name ':'value_json_statmnet)(','use_random_name ':'value_json_statmnet )*)? '}'
+    ;
+    value_json_statmnet:
+     IDENTIFIER
+     |NUMERIC_LITERAL
+     | K_TRUE
+     |K_IF
+     | K_NULL
+     | ONE_CHAR_LETTER
+     | json_statment
     ;
  //end section instraction and functions defination --------------------------------------------------------------
 
@@ -1066,6 +1109,7 @@ K_INTO : I N T O;
 K_IS : I S;
 K_ISNULL : I S N U L L;
 K_JOIN : J O I N;
+K_JOSN: J S O N;
 K_KEY : K E Y;
 K_LEFT : L E F T;
 K_LIKE : L I K E;
