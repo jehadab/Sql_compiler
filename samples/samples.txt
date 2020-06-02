@@ -1,0 +1,44 @@
+
+function sum(){
+for(var x =0;x<8;x++)
+return ;
+if(x<8)
+return 0;
+else if (x<8)
+{
+return 90;
+}
+else return bb;
+while(x<9)
+{
+x++;
+return 8;}
+do
+break;
+while(x<9);
+foreach(var x :  x[])
+{
+c++;
+continue;
+}
+switch (ss){
+case '2':
+x++;
+return lll;
+case '3':
+break;
+DEFAULT: return llll;
+}
+var x []=select * from  dd;
+c[4]=select * from dd ;
+var x = {x:d};
+var x[]=o;
+}
+
+
+
+
+
+
+
+

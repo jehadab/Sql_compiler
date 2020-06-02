@@ -1,0 +1,19 @@
+- print () ;
+
+-break;
+
+-continue;
+
+-foreach can take var without []
+
+-subquerry
+----------------------------------
+notes for antlr file
+ arithmetic_infunction_statment
+     : arithmetic_expr
+     | shortcut_statments
+    // |one_line_if_statment_rule
+the rule "one_line_if_statment_rule" in commeted still do not why ?
+
+
+
