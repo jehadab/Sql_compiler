@@ -20,12 +20,10 @@ import Java.AST.Table_Constraint.IndexedColumn;
 import Java.AST.Table_Constraint.TableConstraintPrimaryKey;
 import Java.AST.expr.*;
 import Java.AST.commn_classes_Sql.name_rule.*;
-import Java.AST.function.sub_function_body;
 import Java.AST.instruction.Print_rule.Inside_the_print;
 import Java.AST.instruction.Print_rule.Print;
 import Java.AST.instruction.Returning.returnes_rule;
 import Java.AST.instruction.all_the_non_functional_instructions.One_line_if;
-import com.sun.javafx.animation.TickCalculation;
 import generated.SQLBaseVisitor;
 import generated.SQLParser;
 
@@ -51,10 +49,8 @@ import Java.AST.ParametesandArgs.*;
 import org.antlr.v4.runtime.*;
 import Java.AST.assignmnet.*;
 import Java.AST.instruction.Returning.*;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 
-import javax.lang.model.type.NullType;
 import java.util.*;
 
 public class BaseVisitor extends SQLBaseVisitor {

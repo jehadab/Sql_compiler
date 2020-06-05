@@ -11,7 +11,6 @@ import java.util.List;
 public class function_body extends Node {
     List<instructions> instructions ;
    returnes_rule r ;
-  sub_function_body sub_one ;
 
    public function_body(){
         this.instructions = new ArrayList<>();
@@ -23,14 +22,6 @@ public class function_body extends Node {
 
     public void setInstructions(List<Java.AST.instruction.instructions> instructions) {
         this.instructions = instructions;
-    }
-
-    public sub_function_body getSub_one() {
-        return sub_one;
-    }
-
-    public void setSub_one(sub_function_body sub_one) {
-        this.sub_one = sub_one;
     }
 
     public returnes_rule getR() {
